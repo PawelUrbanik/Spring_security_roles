@@ -1,30 +1,27 @@
 package pl.pawel.spring_users.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pawel.spring_users.model.User;
 import pl.pawel.spring_users.repository.UserRepository;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
-    UserRepository userRepository;
+    private UserRepository userRepository;
+    private PasswordEncoder encoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUsername(username);
-        if (user != null)
-        {
-            return user;
-        }
-        throw new UsernameNotFoundException("Użytkownik: " + username + " nie został znaleziony");
+    public void addUser(User user)
+    {
+        user.setPassword(encoder.encode(user.getPassword()));
+        user.setRole("ROLE_USER");
+        userRepository.save(user);
     }
 }
