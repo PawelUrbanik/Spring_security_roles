@@ -1,5 +1,7 @@
 package pl.pawel.spring_users.controller;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -7,11 +9,13 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import pl.pawel.spring_users.model.User;
 import pl.pawel.spring_users.service.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -24,8 +28,17 @@ public class UserController {
     }
 
     @GetMapping("/hello")
-    @ResponseBody
-    public String hello(){
+    public String hello(Principal principal, Model model){
+        List<String> authority= new ArrayList<>();
+        String name = principal.getName();
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        authorities.forEach(auth -> authority.add(auth.toString().substring(5)));
+        if (authority.size() == 1)
+        {
+            model.addAttribute("authority", authority.get(0));
+        }
+
+        model.addAttribute("name", name);
         return "hello";
     }
 
