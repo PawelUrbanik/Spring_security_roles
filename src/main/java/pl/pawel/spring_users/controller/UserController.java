@@ -9,10 +9,14 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import pl.pawel.spring_users.model.Token;
 import pl.pawel.spring_users.model.User;
+import pl.pawel.spring_users.repository.TokenRepository;
 import pl.pawel.spring_users.service.UserService;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +46,6 @@ public class UserController {
         return "hello";
     }
 
-
     @GetMapping("/for-user")
     public String forUser(){
         return "for-user";
@@ -70,5 +73,14 @@ public class UserController {
         }
         userService.addUser(user);
         return "redirect:/hello";
+    }
+
+    @GetMapping("/token")
+    public String confirm(@RequestParam String value, Model model)
+    {
+        User user = userService.changeUserStatus(value);
+        model.addAttribute("name", user.getUsername());
+        model.addAttribute("authority", user.getRole().substring(5));
+        return "confirmSucces";
     }
 }

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>E-mail confirmed</title>
+</head>
+<body>
+<h1>Congratulations <span th:text="${authority}"/>: <span th:text="${name}"/> your e-mail is confirmed</h1>
+<br>
+<a th:href="@{/hello}">Click here to login</a>
+</body>
+</html>

@@ -14,12 +14,14 @@ public class Start {
         user.setUsername("Pawel");
         user.setPassword(passwordEncoder.encode("pawel"));
         user.setRole("ROLE_ADMIN");
+        user.setEnabled(true);
         userRepository.save(user);
 
         User user1 = new User();
         user1.setUsername("user");
         user1.setPassword(passwordEncoder.encode("pass"));
         user1.setRole("ROLE_USER");
+        user1.setEnabled(true);
         userRepository.save(user1);
     }
 

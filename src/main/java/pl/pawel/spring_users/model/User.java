@@ -33,6 +33,7 @@ public class User implements UserDetails {
     @Size(min = 3, message = "{pl.pawel.spring_users.model.User.password.Size.message}")
     private String password;
     private String role;
+    private boolean isEnabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -66,16 +67,17 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
     public User() {
     }
 
-    public User(String username, String password, String  role)
+    public User(String username, String password, String  role, Boolean isEnabled)
     {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.isEnabled = isEnabled;
     }
 }
