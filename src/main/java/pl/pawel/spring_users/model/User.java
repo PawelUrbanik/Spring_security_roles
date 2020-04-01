@@ -5,11 +5,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import pl.pawel.spring_users.validator.UniqueUsername;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -21,7 +25,12 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty(message = "{pl.pawel.spring_users.model.User.username.NotEmpty.message}")
+    @UniqueUsername(message = "{pl.pawel.spring_users.model.User.username.UniqueUsername.message}")
+    @Size(min = 3, message = "{pl.pawel.spring_users.model.User.username.Size.message}")
     private String username;
+    @NotEmpty(message = "{pl.pawel.spring_users.model.User.password.NotEmpty.message}")
+    @Size(min = 3, message = "{pl.pawel.spring_users.model.User.password.Size.message}")
     private String password;
     private String role;
 
