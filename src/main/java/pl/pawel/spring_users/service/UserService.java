@@ -9,6 +9,8 @@ import pl.pawel.spring_users.repository.TokenRepository;
 import pl.pawel.spring_users.repository.UserRepository;
 
 import javax.mail.MessagingException;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -52,7 +54,7 @@ public class UserService {
     }
 
     public User changeUserStatus(String value) {
-        Token token = tokenRepository.findByValue(value);
+        Token token =  tokenRepository.findByValue(value).orElseThrow(() -> new NoSuchElementException("Nie znaleziono elementu"));
         User user = token.getUser();
         user.setEnabled(true);
         userRepository.save(user);
